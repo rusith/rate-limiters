@@ -1,5 +1,6 @@
-interface Rule {
-  requestsPerSecond: number;
+export interface Rule {
+  per: "min" | "sec";
+  reqests: number;
 }
 
 export default interface RuleProvider {

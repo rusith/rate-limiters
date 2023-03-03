@@ -1,12 +1,13 @@
-import RuleProvider from "../rule-provider";
+import RateLimitter from "../rate-limitter";
+import RuleProvider, { Rule } from "../rule-provider";
 import UserIdGenerator from "../user-id-generator";
 
 class Bucket {
   private tokenCount: number;
   private lastRefillTime: number;
 
-  constructor(private readonly capacity: number) {
-    this.tokenCount = capacity;
+  constructor(private readonly rule: Rule) {
+    this.tokenCount = rule.reqests;
     this.lastRefillTime = new Date().getTime();
   }
 
@@ -22,14 +23,16 @@ class Bucket {
 
   private refill() {
     const difference = new Date().getTime() - this.lastRefillTime;
-    if (difference > 1000) {
-      this.tokenCount = this.capacity;
+    if (difference > (this.rule.per === "sec" ? 1000 : 60000)) {
+      this.tokenCount = this.rule.reqests;
       this.lastRefillTime = new Date().getTime();
     }
   }
 }
 
-export default class TokenBucketRateLimiter<TReq> {
+export default class TokenBucketRateLimiter<TReq>
+  implements RateLimitter<TReq>
+{
   constructor(
     private readonly userIdGenerator: UserIdGenerator<TReq>,
     private readonly ruleProvider: RuleProvider
@@ -44,9 +47,7 @@ export default class TokenBucketRateLimiter<TReq> {
     if (!this.buckets.has(userId)) {
       this.buckets.set(
         userId,
-        (bucket = new Bucket(
-          this.ruleProvider.getRuleForUser(userId).requestsPerSecond
-        ))
+        (bucket = new Bucket(this.ruleProvider.getRuleForUser(userId)))
       );
     } else {
       bucket = this.buckets.get(userId)!;
