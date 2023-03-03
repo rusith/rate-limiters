@@ -2,7 +2,7 @@ import RateLimitter from "../rate-limitter";
 import RuleProvider from "../rule-provider";
 import UserIdGenerator from "../user-id-generator";
 
-export class FixedWindowRateLimitter<T> implements RateLimitter<T> {
+export default class FixedWindowRateLimitter<T> implements RateLimitter<T> {
   private readonly userWindows = new Map<string, Map<number, number>>();
 
   constructor(

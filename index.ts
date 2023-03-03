@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import TokenBucketRateLimiter from "./helpers/rate-limitting/concrete/token-bucket-rate-limitter";
-import { FixedWindowRateLimitter } from "./helpers/rate-limitting/concrete/fixed-window-rate-limitter";
+import FixedWindowRateLimitter from "./helpers/rate-limitting/concrete/fixed-window-rate-limitter";
+import SlidingWindowRateLimitter from "./helpers/rate-limitting/concrete/sliding-window-rate-limitter";
 import UserIdGenerator from "./helpers/rate-limitting/user-id-generator";
 import RuleProvider from "./helpers/rate-limitting/rule-provider";
 
@@ -29,8 +30,13 @@ const fixedWindowRateLimitter = new FixedWindowRateLimitter(
   ruleProvider
 );
 
+const slidingWindowRateLimitter = new SlidingWindowRateLimitter(
+  userIdGenerator,
+  ruleProvider
+);
+
 app.use((req, res, next) => {
-  if (fixedWindowRateLimitter.shouldHandleRequest(req)) {
+  if (slidingWindowRateLimitter.shouldHandleRequest(req)) {
     next();
   } else {
     res.status(429).send("Too many requests");
