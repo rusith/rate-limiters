@@ -1,5 +1,5 @@
-import RuleProvider from "./abstract/rule-provider";
-import UserIdGenerator from "./abstract/user-id-generator";
+import RuleProvider from "../rule-provider";
+import UserIdGenerator from "../user-id-generator";
 
 class Bucket {
   private tokenCount: number;
@@ -7,6 +7,7 @@ class Bucket {
 
   constructor(private readonly capacity: number) {
     this.tokenCount = capacity;
+    this.lastRefillTime = new Date().getTime();
   }
 
   public shoudlHandle() {
