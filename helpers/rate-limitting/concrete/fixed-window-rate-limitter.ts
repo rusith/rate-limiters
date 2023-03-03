@@ -20,7 +20,6 @@ export class FixedWindowRateLimitter<T> implements RateLimitter<T> {
       userWindow = this.userWindows.get(userId)!;
     }
 
-    console.log(userWindow);
     const rule = this.ruleProvider.getRuleForUser(userId);
 
     const thisWindow = Math.floor(
@@ -34,6 +33,7 @@ export class FixedWindowRateLimitter<T> implements RateLimitter<T> {
       userWindow.set(thisWindow, userWindow.get(thisWindow)! + 1);
       return true;
     } else {
+      userWindow.clear();
       userWindow.set(thisWindow, 1);
       return true;
     }
