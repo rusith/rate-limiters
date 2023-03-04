@@ -1,4 +1,4 @@
-import RateLimitter from "../rate-limitter";
+import RateLimiter from "../rate-limiter";
 import RuleProvider, { Rule } from "../rule-provider";
 import UserIdGenerator from "../user-id-generator";
 
@@ -30,9 +30,7 @@ class Bucket {
   }
 }
 
-export default class TokenBucketRateLimiter<TReq>
-  implements RateLimitter<TReq>
-{
+export default class TokenBucketRateLimiter<TReq> implements RateLimiter<TReq> {
   constructor(
     private readonly userIdGenerator: UserIdGenerator<TReq>,
     private readonly ruleProvider: RuleProvider
