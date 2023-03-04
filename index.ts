@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
-import TokenBucketRateLimiter from "./helpers/rate-limitting/concrete/token-bucket-rate-limiter";
-import FixedWindowRateLimiter from "./helpers/rate-limitting/concrete/fixed-window-rate-limiter";
-import SlidingWindowRateLimiter from "./helpers/rate-limitting/concrete/sliding-window-rate-limiter";
-import UserIdGenerator from "./helpers/rate-limitting/user-id-generator";
-import RuleProvider from "./helpers/rate-limitting/rule-provider";
+import TokenBucketRateLimiter from "./helpers/rate-limiting/concrete/token-bucket-rate-limiter";
+import FixedWindowRateLimiter from "./helpers/rate-limiting/concrete/fixed-window-rate-limiter";
+import SlidingWindowRateLimiter from "./helpers/rate-limiting/concrete/sliding-window-rate-limiter";
+import UserIdGenerator from "./helpers/rate-limiting/user-id-generator";
+import RuleProvider from "./helpers/rate-limiting/rule-provider";
 
 const app = express();
 app.use(cors());
